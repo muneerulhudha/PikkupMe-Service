@@ -5,7 +5,8 @@ import java.security.SecureRandom;
 import javax.crypto.SecretKey;
 import javax.crypto.SecretKeyFactory;
 import javax.crypto.spec.PBEKeySpec;
-import org.apache.tomcat.util.codec.binary.Base64;
+
+import org.apache.commons.codec.binary.Base64;
 
 public class Password {
     // The higher the number of iterations the more 

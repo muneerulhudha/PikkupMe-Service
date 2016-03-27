@@ -97,7 +97,9 @@ public class RideService {
 	
 				matchCollection.insertOne(matchDocument);
 				
-				SmsSender.SendSms(request.get("phoneno").toString(), "The driver "+username+" registered a trip to "+destination+" on "+date);
+				String phone = Util.getPhoneNo(request.get("ridername").toString());
+				
+				SmsSender.SendSms(phone, "The driver "+username+" registered a trip to "+destination+" on "+date);
 			}
 			//END MATCHMAKING
 			

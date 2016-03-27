@@ -66,7 +66,7 @@ public class RideRequestService {
 	@POST
 	@Consumes("application/x-www-form-urlencoded")
 	@Produces(MediaType.APPLICATION_JSON)
-	public String postRideRequest(@FormParam("username") String username, @FormParam("origin") String origin, @FormParam("destination") String destination, @FormParam("date") String date) throws TwilioRestException {
+	public String postRideRequest(@FormParam("username") String username, @FormParam("origin") String origin, @FormParam("destination") String destination, @FormParam("date") String date) throws Exception {
 		DataBaseManager manager = DataBaseManager.getInstance();
 		MongoCollection<Document> collection = manager.getDatabase().getCollection("requests");
 		String result = "";
@@ -93,23 +93,29 @@ public class RideRequestService {
 				
 				while(req.hasNext()) {
 					Document request = req.next();
+					String phone = Util.getPhoneNo(ride.get("ridername").toString());
 					
 					if(count > 4) {
-						SmsSender.SendSms(request.get("phoneno").toString(), "No rides available. Consider taking a uber with other riders. Estimated cost: "+ Uber.getCost()/4);
+						SmsSender.SendSms(phone, "No rides available. Consider taking a uber with other riders. Estimated cost: "+ Uber.getCost()/4);
 					} else {
-						SmsSender.SendSms(request.get("phoneno").toString(), "No rides available. Consider taking a uber with other riders. Estimated cost: "+ Uber.getCost()/count);
+						SmsSender.SendSms(phone, "No rides available. Consider taking a uber with other riders. Estimated cost: "+ Uber.getCost()/count);
 					}
 				}
-			}
-			
-			Document matchDocument = new Document("ridername", username)
-				.append("drivername", ride.get("drivername").toString())
-				.append("status", 0)
-				.append("destination", ride.get("destination").toString());
+			}else{
+				Document matchDocument = new Document("ridername", username)
+						.append("drivername", ride.get("drivername").toString())
+						.append("status", 0)
+						.append("destination", ride.get("destination").toString());
 
-			matchCollection.insertOne(matchDocument);
-			
-			SmsSender.SendSms(ride.get("phoneno").toString(), "The rider "+username+" requested a trip to "+destination+" on "+date);
+				matchCollection.insertOne(matchDocument);
+				
+				String phone = Util.getPhoneNo(ride.get("drivername").toString());
+				
+				//System.out.println(ride.get("phoneno"));
+				
+				SmsSender.SendSms(phone, "The rider "+username+" requested a trip to "+destination+" on "+date);
+
+			}
 			//END MATCHMAKING
 			
 			result = "{\"success\": true}";	

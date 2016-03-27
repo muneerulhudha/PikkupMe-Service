@@ -8,6 +8,8 @@ import javax.ws.rs.GET;
 import javax.ws.rs.POST;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
+import javax.ws.rs.Produces;
+import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
 import org.bson.Document;
@@ -37,10 +39,12 @@ public class ProfileService {
 	
 	@POST
 	@Consumes("application/x-www-form-urlencoded")
-	public Response putProfile(@FormParam("username") String username, @FormParam("email") String email, @FormParam("college") String college, @FormParam("address") String address, @FormParam("phoneno") String phoneNumber) {
+	@Produces(MediaType.APPLICATION_JSON)
+	public String putProfile(@FormParam("username") String username, @FormParam("email") String email, @FormParam("college") String college, @FormParam("address") String address, @FormParam("phoneno") String phoneNumber) {
 		
 		DataBaseManager manager = DataBaseManager.getInstance();
 		MongoCollection<Document> collection = manager.getDatabase().getCollection("users");
+		String result="";
 		
 		Document existingDoc = collection.find(eq("username", username)).first();
 		
@@ -53,7 +57,8 @@ public class ProfileService {
 		
 		collection.updateOne(eq("username", username), new Document("$set", doc));
 		
-		return Response.status(202).entity("USER UPDATED").build();
+		result = "{\"success\": true}";	
+		return result;
 		
 	}
 	

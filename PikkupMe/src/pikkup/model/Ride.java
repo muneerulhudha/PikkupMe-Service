@@ -12,16 +12,20 @@ public class Ride {
 	
 	int availableSeats;
 	
-	boolean hasDriver;
+	String driverName;
 	
 	RideStatus rideStatus;
+	
+	public Ride() {
+		
+	}
 
-	public Ride(String origin, String destination, Date desiredArrival, int availableSeats, boolean hasDriver) {
+	public Ride(String origin, String destination, Date desiredArrival, int availableSeats, String driverName) {
 		this.origin = origin;
 		this.destination = destination;
 		this.desiredArrival = desiredArrival;
 		this.availableSeats = availableSeats;
-		this.hasDriver = hasDriver;
+		this.driverName = driverName;
 	}
 
 	public String getOrigin() {
@@ -56,12 +60,20 @@ public class Ride {
 		this.availableSeats = availableSeats;
 	}
 
-	public boolean isHasDriver() {
-		return hasDriver;
+	public String getDriverName() {
+		return driverName;
 	}
 
-	public void setHasDriver(boolean hasDriver) {
-		this.hasDriver = hasDriver;
+	public void setDriverName(String driverName) {
+		this.driverName = driverName;
+	}
+
+	public RideStatus getRideStatus() {
+		return rideStatus;
+	}
+
+	public void setRideStatus(RideStatus rideStatus) {
+		this.rideStatus = rideStatus;
 	}
 	
 }

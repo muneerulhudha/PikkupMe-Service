@@ -1,12 +1,29 @@
 package pikkup.core;
 
-import pikkup.util.Grade;
+import static com.mongodb.client.model.Filters.eq;
+
+import org.bson.Document;
+
+import pikkup.base.DataBaseManager;
+
+import com.mongodb.client.MongoCollection;
+import com.mongodb.client.MongoCursor;
+
 
 public class MatchMaking {
+
+	public static void process() {
+		DataBaseManager manager = DataBaseManager.getInstance();
+		MongoCollection<Document> collection = manager.getDatabase().getCollection("rides");
+		MongoCollection<Document> collection2 = manager.getDatabase().getCollection("requests");
+		
+//		MongoCursor<Document> documents = collection.find(eq("B", DAAAAAATE)).iterator();
+//		MongoCursor<Document> documents2 = collection2.find(eq("BYDATE!!!", DAAAAAATE)).iterator();
+		
+		
+		
+	}
 	
-	long timeSpan;
-	
-	Grade grade;
 	
 	
 }

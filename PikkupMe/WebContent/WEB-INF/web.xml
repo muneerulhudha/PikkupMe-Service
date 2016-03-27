@@ -23,4 +23,10 @@
     <servlet-name>REST Services</servlet-name>
     <url-pattern>/*</url-pattern>
   </servlet-mapping>
+  
+  <listener>
+    <listener-class>
+        pikkup.core.Scheduler
+    </listener-class>
+  </listener>
 </web-app>

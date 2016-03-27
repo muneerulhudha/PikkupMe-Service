@@ -12,7 +12,7 @@ import javax.ws.rs.core.Response;
 
 import org.bson.Document;
 
-import pikkup.base.DBManager;
+import pikkup.base.DataBaseManager;
 import pikkup.model.Profile;
 import pikkup.util.Util;
 
@@ -25,7 +25,7 @@ public class ProfileService {
 	@Path("/{username}")
 	public String getProfile(@PathParam("username") String username) {
 		
-		DBManager manager = DBManager.getInstance();
+		DataBaseManager manager = DataBaseManager.getInstance();
 		MongoCollection<Document> collection = manager.getDatabase().getCollection("users");
 		
 		Document doc = collection.find(eq("username", username)).first();
@@ -39,7 +39,7 @@ public class ProfileService {
 	@Consumes("application/x-www-form-urlencoded")
 	public Response putProfile(@FormParam("username") String username, @FormParam("email") String email, @FormParam("college") String college, @FormParam("address") String address, @FormParam("phoneno") String phoneNumber) {
 		
-		DBManager manager = DBManager.getInstance();
+		DataBaseManager manager = DataBaseManager.getInstance();
 		MongoCollection<Document> collection = manager.getDatabase().getCollection("users");
 		
 		Document existingDoc = collection.find(eq("username", username)).first();

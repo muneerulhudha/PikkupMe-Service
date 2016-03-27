@@ -5,22 +5,22 @@ import com.mongodb.MongoClientURI;
 import com.mongodb.client.MongoDatabase;
 
 
-public class DBManager {
+public class DataBaseManager {
 
-	private static DBManager instance = null;
+	private static DataBaseManager instance = null;
 	
 	MongoClient mongoClient;
 	MongoDatabase database;
 
-	protected DBManager() {
+	protected DataBaseManager() {
 		MongoClientURI connectionString = new MongoClientURI("mongodb://muneer:1234567@ds023078.mlab.com:23078/pikkup");
 		mongoClient = new MongoClient(connectionString);
 		database = mongoClient.getDatabase("pikkup");
 	}
 
-	public static DBManager getInstance() {
+	public static DataBaseManager getInstance() {
 		if (instance == null) {
-			instance = new DBManager();
+			instance = new DataBaseManager();
 		}
 		return instance;
 	}

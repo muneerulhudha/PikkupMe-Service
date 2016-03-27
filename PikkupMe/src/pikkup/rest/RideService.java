@@ -1,6 +1,7 @@
 package pikkup.rest;
 
-import static com.mongodb.client.model.Filters.*;
+import static com.mongodb.client.model.Filters.and;
+import static com.mongodb.client.model.Filters.eq;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -15,17 +16,15 @@ import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
-import javax.ws.rs.core.Response;
 
 import org.bson.Document;
 
-import com.mongodb.client.MongoCollection;
-import com.mongodb.client.MongoCursor;
-
 import pikkup.base.DataBaseManager;
-import pikkup.core.MatchMaking;
 import pikkup.model.Ride;
 import pikkup.util.Util;
+
+import com.mongodb.client.MongoCollection;
+import com.mongodb.client.MongoCursor;
 
 @Path("ride")
 public class RideService {

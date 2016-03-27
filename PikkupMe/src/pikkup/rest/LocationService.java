@@ -1,5 +1,7 @@
 package pikkup.rest;
 
+import static com.mongodb.client.model.Filters.eq;
+
 import javax.ws.rs.GET;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
@@ -13,8 +15,6 @@ import com.mongodb.MongoClientURI;
 import com.mongodb.client.MongoCollection;
 import com.mongodb.client.MongoCursor;
 import com.mongodb.client.MongoDatabase;
-import com.mongodb.util.JSON;
-import static com.mongodb.client.model.Filters.*;
 
 @Path("locations")
 public class LocationService {

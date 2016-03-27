@@ -1,8 +1,5 @@
 package pikkup.model;
 
-import java.util.Date;
-
-
 public class RideRequest {
 	
 	String origin;

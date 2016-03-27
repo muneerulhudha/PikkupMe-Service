@@ -2,7 +2,9 @@ package pikkup.rest;
 
 import static com.mongodb.client.model.Filters.eq;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import javax.ws.rs.Consumes;
@@ -11,23 +13,26 @@ import javax.ws.rs.GET;
 import javax.ws.rs.POST;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
+import javax.ws.rs.Produces;
+import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
 import org.bson.Document;
+
+import com.mongodb.client.MongoCollection;
+import com.mongodb.client.MongoCursor;
 
 import pikkup.base.DataBaseManager;
 import pikkup.core.MatchMaking;
 import pikkup.model.Ride;
 import pikkup.util.Util;
 
-import com.mongodb.client.MongoCollection;
-import com.mongodb.client.MongoCursor;
-
 @Path("ride")
 public class RideService {
 	
 	@GET
 	@Path("/{username}")
+	@Produces(MediaType.APPLICATION_JSON)
 	public String getRide(@PathParam("username") String username) {
 		
 		DataBaseManager manager = DataBaseManager.getInstance();
@@ -39,11 +44,16 @@ public class RideService {
 		while(documents.hasNext()) {
 			Document doc = documents.next();
 			
+			Date date = Util.stringToDate(doc.get("date").toString());
+			SimpleDateFormat format = new SimpleDateFormat("E, dd MMM yyyy");
+			String dateString = format.format(date);
+			
+			
 			Ride ride = new Ride();
 			
 			ride.setOrigin(doc.get("origin").toString());
 			ride.setDestination(doc.get("destination").toString());
-			ride.setDesiredArrival(Util.stringToDate(doc.get("date").toString()));
+			ride.setDesiredArrival(dateString);
 			ride.setAvailableSeats(new Integer((doc.get("seats").toString())));
 			ride.setDriverName(doc.get("drivername").toString());
 			

@@ -8,7 +8,7 @@ public class Ride {
 	String origin;
 	String destination;
 	
-	Date desiredArrival;
+	String desiredArrival;
 	
 	int availableSeats;
 	
@@ -20,7 +20,7 @@ public class Ride {
 		
 	}
 
-	public Ride(String origin, String destination, Date desiredArrival, int availableSeats, String driverName) {
+	public Ride(String origin, String destination, String desiredArrival, int availableSeats, String driverName) {
 		this.origin = origin;
 		this.destination = destination;
 		this.desiredArrival = desiredArrival;
@@ -44,11 +44,11 @@ public class Ride {
 		this.destination = destination;
 	}
 
-	public Date getDesiredArrival() {
+	public String getDesiredArrival() {
 		return desiredArrival;
 	}
 
-	public void setDesiredArrival(Date desiredArrival) {
+	public void setDesiredArrival(String desiredArrival) {
 		this.desiredArrival = desiredArrival;
 	}
 

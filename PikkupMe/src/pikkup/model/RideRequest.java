@@ -8,7 +8,7 @@ public class RideRequest {
 	String origin;
 	String destination;
 	
-	Date desiredArrival;
+	String desiredArrival;
 	
 	String riderName;
 	
@@ -16,7 +16,7 @@ public class RideRequest {
 		
 	}
 
-	public RideRequest(String origin, String destination, Date desiredArrival,
+	public RideRequest(String origin, String destination, String desiredArrival,
 			String riderName) {
 
 		this.origin = origin;
@@ -41,11 +41,11 @@ public class RideRequest {
 		this.destination = destination;
 	}
 
-	public Date getDesiredArrival() {
+	public String getDesiredArrival() {
 		return desiredArrival;
 	}
 
-	public void setDesiredArrival(Date desiredArrival) {
+	public void setDesiredArrival(String desiredArrival) {
 		this.desiredArrival = desiredArrival;
 	}
 

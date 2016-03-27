@@ -2,7 +2,9 @@ package pikkup.rest;
 
 import static com.mongodb.client.model.Filters.eq;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import javax.ws.rs.Consumes;
@@ -11,6 +13,8 @@ import javax.ws.rs.GET;
 import javax.ws.rs.POST;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
+import javax.ws.rs.Produces;
+import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
 import org.bson.Document;
@@ -28,6 +32,7 @@ public class RideRequestService {
 	
 	@GET
 	@Path("/{username}")
+	@Produces(MediaType.APPLICATION_JSON)
 	public String getRideRequest(@PathParam("username") String username) {
 		
 		DataBaseManager manager = DataBaseManager.getInstance();
@@ -39,11 +44,15 @@ public class RideRequestService {
 		while(documents.hasNext()) {
 			Document doc = documents.next();
 			
+			Date date = Util.stringToDate(doc.get("date").toString());
+			SimpleDateFormat format = new SimpleDateFormat("E, dd MMM yyyy");
+			String dateString = format.format(date);
+			
 			RideRequest request = new RideRequest();
 			
 			request.setOrigin(doc.get("origin").toString());
 			request.setDestination(doc.get("destination").toString());
-			request.setDesiredArrival(Util.stringToDate(doc.get("date").toString()));
+			request.setDesiredArrival(dateString);
 			request.setRiderName(doc.get("ridername").toString());
 			
 			requests.add(request);

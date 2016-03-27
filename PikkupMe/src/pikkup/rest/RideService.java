@@ -21,10 +21,12 @@ import org.bson.Document;
 
 import pikkup.base.DataBaseManager;
 import pikkup.model.Ride;
+import pikkup.util.SmsSender;
 import pikkup.util.Util;
 
 import com.mongodb.client.MongoCollection;
 import com.mongodb.client.MongoCursor;
+import com.twilio.sdk.TwilioRestException;
 
 @Path("ride")
 public class RideService {
@@ -65,7 +67,7 @@ public class RideService {
 	@POST
 	@Consumes("application/x-www-form-urlencoded")
 	@Produces(MediaType.APPLICATION_JSON)
-	public String postRide(@FormParam("username") String username, @FormParam("origin") String origin, @FormParam("destination") String destination, @FormParam("date") String date, @FormParam("seats") int seats) {
+	public String postRide(@FormParam("username") String username, @FormParam("origin") String origin, @FormParam("destination") String destination, @FormParam("date") String date, @FormParam("seats") int seats) throws TwilioRestException {
 		DataBaseManager manager = DataBaseManager.getInstance();
 		MongoCollection<Document> collection = manager.getDatabase().getCollection("rides");
 		String result = "";
@@ -79,6 +81,27 @@ public class RideService {
 					.append("seats", seats);
 		
 			collection.insertOne(newDoc);
+			
+			//MATCHMAKING
+			MongoCollection<Document> requests = manager.getDatabase().getCollection("requests");
+			MongoCursor<Document> requestMatches = requests.find(and(eq("destination", destination), eq("date", date))).iterator();
+			MongoCollection<Document> matchCollection = manager.getDatabase().getCollection("matches");
+			
+			while(requestMatches.hasNext()) {
+				Document request = requestMatches.next();
+				
+				Document matchDocument = new Document("drivername", username)
+				.append("ridername", request.get("ridername").toString())
+				.append("status", 0)
+				.append("destination", request.get("destination").toString());
+	
+				matchCollection.insertOne(matchDocument);
+				
+				SmsSender.SendSms(request.get("phoneno").toString(), "The driver "+username+" registered a trip to "+destination+" on "+date);
+			}
+			//END MATCHMAKING
+			
+			
 			result = "{\"success\": true}";	
 			return result;
 		}else{

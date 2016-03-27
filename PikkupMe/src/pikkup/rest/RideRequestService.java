@@ -21,10 +21,13 @@ import org.bson.Document;
 
 import pikkup.base.DataBaseManager;
 import pikkup.model.RideRequest;
+import pikkup.util.SmsSender;
+import pikkup.util.Uber;
 import pikkup.util.Util;
 
 import com.mongodb.client.MongoCollection;
 import com.mongodb.client.MongoCursor;
+import com.twilio.sdk.TwilioRestException;
 
 @Path("request")
 public class RideRequestService {
@@ -63,7 +66,7 @@ public class RideRequestService {
 	@POST
 	@Consumes("application/x-www-form-urlencoded")
 	@Produces(MediaType.APPLICATION_JSON)
-	public String postRideRequest(@FormParam("username") String username, @FormParam("origin") String origin, @FormParam("destination") String destination, @FormParam("date") String date) {
+	public String postRideRequest(@FormParam("username") String username, @FormParam("origin") String origin, @FormParam("destination") String destination, @FormParam("date") String date) throws TwilioRestException {
 		DataBaseManager manager = DataBaseManager.getInstance();
 		MongoCollection<Document> collection = manager.getDatabase().getCollection("requests");
 		String result = "";
@@ -76,6 +79,39 @@ public class RideRequestService {
 					.append("date", date);
 		
 			collection.insertOne(newDoc);
+			
+			//MATCHMAKING
+			MongoCollection<Document> rides = manager.getDatabase().getCollection("rides");
+			Document ride = rides.find(and(eq("destination", destination), eq("date", date))).first();
+			MongoCollection<Document> matchCollection = manager.getDatabase().getCollection("matches");
+			
+			if(ride == null) {
+				MongoCollection<Document> requests = manager.getDatabase().getCollection("requests");
+				long count = requests.count(and(eq("destination", destination), eq("date", date)));
+				
+				MongoCursor<Document> req = rides.find(and(eq("destination", destination), eq("date", date))).iterator();
+				
+				while(req.hasNext()) {
+					Document request = req.next();
+					
+					if(count > 4) {
+						SmsSender.SendSms(request.get("phoneno").toString(), "No rides available. Consider taking a uber with other riders. Estimated cost: "+ Uber.getCost()/4);
+					} else {
+						SmsSender.SendSms(request.get("phoneno").toString(), "No rides available. Consider taking a uber with other riders. Estimated cost: "+ Uber.getCost()/count);
+					}
+				}
+			}
+			
+			Document matchDocument = new Document("ridername", username)
+				.append("drivername", ride.get("drivername").toString())
+				.append("status", 0)
+				.append("destination", ride.get("destination").toString());
+
+			matchCollection.insertOne(matchDocument);
+			
+			SmsSender.SendSms(ride.get("phoneno").toString(), "The rider "+username+" requested a trip to "+destination+" on "+date);
+			//END MATCHMAKING
+			
 			result = "{\"success\": true}";	
 			return result;
 		}else{

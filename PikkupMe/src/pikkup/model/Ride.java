@@ -1,5 +1,7 @@
 package pikkup.model;
 
+import java.util.List;
+
 public class Ride {
 	
 	String origin;
@@ -11,13 +13,16 @@ public class Ride {
 	
 	String driverName;
 	
+	List<String> riderNames;
+	
 	RideStatus rideStatus;
 	
 	public Ride() {
 		
 	}
 
-	public Ride(String origin, String destination, String desiredArrival, int availableSeats, String driverName) {
+	public Ride(String origin, String destination, String desiredArrival,
+			int availableSeats, String driverName) {
 		this.origin = origin;
 		this.destination = destination;
 		this.desiredArrival = desiredArrival;
@@ -63,6 +68,14 @@ public class Ride {
 
 	public void setDriverName(String driverName) {
 		this.driverName = driverName;
+	}
+
+	public List<String> getRiderNames() {
+		return riderNames;
+	}
+
+	public void setRiderNames(List<String> riderNames) {
+		this.riderNames = riderNames;
 	}
 
 	public RideStatus getRideStatus() {

@@ -8,6 +8,7 @@ import javax.ws.rs.GET;
 import javax.ws.rs.POST;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
+import javax.ws.rs.core.Response;
 
 import org.bson.Document;
 
@@ -36,17 +37,23 @@ public class ProfileService {
 	
 	@POST
 	@Consumes("application/x-www-form-urlencoded")
-	public void putProfile(@FormParam("username") String username, @FormParam("email") String email, @FormParam("college") String college, @FormParam("address") String address, @FormParam("phoneNumber") String phoneNumber) {
+	public Response putProfile(@FormParam("username") String username, @FormParam("email") String email, @FormParam("college") String college, @FormParam("address") String address, @FormParam("phoneno") String phoneNumber) {
 		
 		DBManager manager = DBManager.getInstance();
 		MongoCollection<Document> collection = manager.getDatabase().getCollection("users");
 		
-		collection.updateOne(new Document("username", username),
-		        new Document("email", email)
-		                .append("college", college)
-		                .append("address", address)
-		                .append("phoneno", phoneNumber)
-				);
+		Document existingDoc = collection.find(eq("username", username)).first();
+		
+		Document doc = new Document("username", username)
+					.append("password", existingDoc.get("password"))
+					.append("email", email)
+					.append("college", college)
+	                .append("address", address)
+	                .append("phoneno", phoneNumber);
+		
+		collection.updateOne(eq("username", username), new Document("$set", doc));
+		
+		return Response.status(202).entity("USER UPDATED").build();
 		
 	}
 	

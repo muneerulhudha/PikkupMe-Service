@@ -7,13 +7,13 @@ public class Profile {
 	String email;
 	String college;
 	String address;
-	String phoneNumber;
+	String phoneno;
 	
 	public Profile(String email, String college, String address, String phoneNumber) {
 		this.email = email;
 		this.college = college;
 		this.address = address;
-		this.phoneNumber = phoneNumber;
+		this.phoneno = phoneNumber;
 	}
 	
 	public Profile(String username, String email,
@@ -71,11 +71,11 @@ public class Profile {
 	}
 
 	public String getPhoneNumber() {
-		return phoneNumber;
+		return phoneno;
 	}
 
 	public void setPhoneNumber(String phoneNumber) {
-		this.phoneNumber = phoneNumber;
+		this.phoneno = phoneNumber;
 	}
 	
 }

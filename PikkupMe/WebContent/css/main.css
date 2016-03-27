@@ -1,0 +1,160 @@
+body{
+    background-color: #fbfbfb;
+    font-family: 'Open Sans', sans-serif;
+}
+
+.login-panel{
+    padding: 10%;
+}
+.login-icon{
+    margin-top: 20%;
+    width: 200px;
+    margin-bottom: 3px;
+}
+.logo{
+    width: 250px;
+    /*mask-image: url(../img/logo.svg);*/
+}
+.title-text{
+    font-size: 77px;
+    font-family: 'Grand Hotel', cursive;
+    color: #e67e22;
+    margin-left: 15%;
+}
+
+
+
+.signin{
+    width: 350px;
+    font-family: 'Open Sans', sans-serif;
+
+}
+.sub{
+    position: relative;
+    top: 13px;
+    left: -52px;
+    font-size: 12px;
+}
+.sub a{
+    color: #fff;
+    text-decoration: underline;
+    font-weight: 300;
+}
+.signin label{
+    font-weight: 300;
+    font-size: 24px;
+}
+.signin .title{
+    color: #fff;
+    background: #5BC5A7;
+    padding: 15px 25px 15px 30px;
+    height: 70px;
+}
+
+.signup-group {
+    height: 250px;
+    background:#F4F5F7;
+}
+.signup-group .content{
+    padding-left: 30px;
+    padding-right: 30px;
+    padding-top: 10px;
+    padding-bottom: 10px;
+
+}
+
+.signup-group .form-control{
+    border-radius: 0px;
+    height: 40px;
+    margin-bottom: 10px;
+    border:  0px solid #ccc;
+}
+.signup-group a{
+    color:#A4A4A2;
+    font-size: 14px;
+    margin-bottom: 5px;
+
+}
+.signup-group a:hover{
+    text-decoration: none;
+}
+.input-group > .input-group-addon{
+
+}
+.sign-group {
+    height: 200px;
+    background:#F4F5F7;
+}
+.sign-group .content{
+    padding-left: 30px;
+    padding-right: 30px;
+    padding-top: 10px;
+    padding-bottom: 10px;
+
+}
+
+.sign-group .form-control{
+    border-radius: 0px;
+    height: 40px;
+    margin-bottom: 10px;
+    border:  0px solid #ccc;
+}
+.sign-group a{
+    color:#A4A4A2;
+    font-size: 14px;
+    margin-bottom: 5px;
+
+}
+.sign-group a:hover{
+    text-decoration: none;
+}
+.btn-login{
+    background: #5BC5A7;
+    color: #fff;
+    font-size: 18px;
+    font-weight: 300;
+    transition: opacity .5s ease-in-out;
+}
+.btn-login:hover{
+    opacity: .8;
+
+}
+.social-login{
+    height: 80px;
+    background: #EDEDEE;
+}
+.s-icons{
+
+    padding-left: 45px;
+    padding-top: 24px;
+    border-right: 1px solid #e0e0e0;
+    height: 80px;
+    transition: background .3s ease-in-out;
+
+}
+.s-icons:hover{
+    background: #C7CFD1;
+}
+.s-icons .fa{
+    font-size: 30px;
+    color: #BDCBCB;
+}
+/* enable absolute positioning */
+.inner-addon {
+    position: relative;
+}
+
+/* style glyph */
+.inner-addon .glyphicon {
+    position: absolute;
+    padding: 10px;
+    pointer-events: none;
+}
+
+/* align glyph */
+.left-addon .glyphicon  { left:  0px;color: #adadad;}
+.right-addon .glyphicon { right: 0px;}
+
+/* add padding  */
+.left-addon input  { padding-left:  30px; }
+.right-addon input { padding-right: 30px; }

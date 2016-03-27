@@ -1,0 +1,80 @@
+
+    <div class="row login-panel">
+        <div class="col-xs-6">
+            <div class="login-icon">
+                <img src="img/logo.svg" class="logo" alt="Welcome to Mail App" />
+
+            </div>
+            <h4 class="title-text">pikkup</h4>
+        </div>
+        <div class="col-xs-6">
+            <div class="signin">
+                <div  class="form-groups">
+                    <div class="title">
+                        <label for="signinlabel">
+                            Sign Up
+                        </label>
+                        <sup class="sub">
+                            or
+                            <a href="">
+                                sign in
+                            </a>
+                        </sup>
+                    </div>
+                    <form ng-submit="vm.login()" role="form" class="signup-group" name="form">
+                        <div class="content" >
+                            <div class="inner-addon left-addon">
+                                <i class="glyphicon glyphicon-envelope">
+                                </i>
+                                <input type="email" class="form-control" ng-model="vm.username" required placeholder="utdallas email" />
+                            </div>
+                            <div class="inner-addon left-addon form-group" ng-class="{ 'has-error': form.username.$dirty && form.username.$error.required }">
+                                <i class="glyphicon glyphicon-user">
+                                </i>
+                                <input type="text" class="form-control" placeholder="Username" name="username"/>
+                                <span ng-show="form.username.$dirty && form.username.$error.required" class="help-block">Username is required</span>
+                            </div>
+                            <div class="inner-addon left-addon" ng-class="{ 'has-error': form.password.$dirty && form.password.$error.required }">
+                                <i class="glyphicon glyphicon-lock">
+                                </i>
+                                <input type="password"  name="password" class="form-control" placeholder="Password"  id="password" ng-model="vm.password" required/>
+                                <span ng-show="form.password.$dirty && form.password.$error.required" class="help-block">Password is required</span>
+                            </div>
+                            <a class="login-link pull-right" href="#">
+                                <small>
+                                    Forgot password?
+                                </small>
+                            </a>
+                            <div class="form-actions">
+                            <button class="form-control btn-login" type="submit" ng-disabled="form.$invalid || vm.dataLoading" >
+                                        <span class="text-center">
+                                            Sign Up
+                                        </span>
+                            </button>
+                            </div>
+                        </div>
+                    </form>
+                    <div class="social-login">
+                        <div class="col-xs-4 s-icons">
+                            <a href="#" class="">
+                                <i class="fa fa-google-plus ">
+                                </i>
+                            </a>
+                        </div>
+                        <div class="col-xs-4 s-icons">
+                            <a href="#" class="">
+                                <i class="fa fa-twitter ">
+                                </i>
+                            </a>
+                        </div>
+                        <div class="col-xs-4 s-icons">
+                            <a href="#" class="">
+                                <i class="fa fa-facebook ">
+                                </i>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>

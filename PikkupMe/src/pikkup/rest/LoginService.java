@@ -6,6 +6,8 @@ import javax.ws.rs.Consumes;
 import javax.ws.rs.FormParam;
 import javax.ws.rs.POST;
 import javax.ws.rs.Path;
+import javax.ws.rs.Produces;
+import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
 import org.bson.Document;
@@ -23,7 +25,8 @@ public class LoginService {
 	@SuppressWarnings("resource")
 	@POST
 	@Consumes("application/x-www-form-urlencoded")
-	public Response login(@FormParam("username") String username, @FormParam("password") String password) throws Exception {
+	@Produces(MediaType.APPLICATION_JSON)
+	public String login(@FormParam("username") String username, @FormParam("password") String password) throws Exception {
 		
 		MongoClientURI connectionString = new MongoClientURI("mongodb://muneer:1234567@ds023078.mlab.com:23078/pikkup");
 		MongoClient mongoClient = new MongoClient(connectionString);
@@ -34,14 +37,18 @@ public class LoginService {
 		
 		Document doc = collection.find(eq("username", username)).first();
 		
-		String actualPass = doc.get("password").toString();
-		
-		if(Password.check(password, actualPass)){
-			result = "SUCCESS";	
-			return Response.status(202).entity(result).build();
+		if(doc != null){
+			String actualPass = doc.get("password").toString();			
+			if(Password.check(password, actualPass)){
+				result = "{\"success\": true}";	
+				return result;
+			}else{
+				result = "{\"success\": false, \"message\": \"Invalid Password\"}";
+				return result;
+			}
 		}else{
-			result = "FAILED";
-			return Response.status(401).entity(result).build();
+			result = "{\"success\": false, \"message\": \"Invalid Username\"}";
+			return result;			
 		}
 
 	}

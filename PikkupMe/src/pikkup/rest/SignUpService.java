@@ -6,7 +6,8 @@ import javax.ws.rs.Consumes;
 import javax.ws.rs.FormParam;
 import javax.ws.rs.POST;
 import javax.ws.rs.Path;
-import javax.ws.rs.core.Response;
+import javax.ws.rs.Produces;
+import javax.ws.rs.core.MediaType;
 
 import org.bson.Document;
 
@@ -23,7 +24,8 @@ public class SignUpService {
 	@SuppressWarnings("resource")
 	@POST
 	@Consumes("application/x-www-form-urlencoded")
-	public Response signup(@FormParam("username") String username, @FormParam("password") String password, @FormParam("email") String email) throws Exception {
+	@Produces(MediaType.APPLICATION_JSON)
+	public String signup(@FormParam("username") String username, @FormParam("password") String password, @FormParam("email") String email) throws Exception {
 		
 		MongoClientURI connectionString = new MongoClientURI("mongodb://muneer:1234567@ds023078.mlab.com:23078/pikkup");
 		MongoClient mongoClient = new MongoClient(connectionString);
@@ -42,11 +44,11 @@ public class SignUpService {
 		               .append("phoneno", "");
 			
 			collection.insertOne(newDoc);
-			result = "SUCCESS";
-			return Response.status(202).entity(result).build();
+			result = "{\"success\": true}";	
+			return result;
 		}else{
-			result = "USERNAME or EMAIL ALREADY EXISTS";
-			return Response.status(401).entity(result).build();
+			result = "{\"success\": false, \"message\": \"Username or Email already exists\"}";
+			return result;
 		}
 
 	}

@@ -1,5 +1,6 @@
 package pikkup.rest;
 
+import static com.mongodb.client.model.Filters.and;
 import static com.mongodb.client.model.Filters.eq;
 
 import java.text.SimpleDateFormat;
@@ -63,20 +64,27 @@ public class RideRequestService {
 	
 	@POST
 	@Consumes("application/x-www-form-urlencoded")
-	public Response postRideRequest(@FormParam("username") String username, @FormParam("origin") String origin, @FormParam("destination") String destination, @FormParam("date") String date) {
+	@Produces(MediaType.APPLICATION_JSON)
+	public String postRideRequest(@FormParam("username") String username, @FormParam("origin") String origin, @FormParam("destination") String destination, @FormParam("date") String date) {
 		DataBaseManager manager = DataBaseManager.getInstance();
 		MongoCollection<Document> collection = manager.getDatabase().getCollection("requests");
+		String result = "";
 		
-		Document newDoc = new Document("ridername", username)
+		Document doc = collection.find(and(eq("ridername", username), eq("destination", destination), eq("date", date))).first();
+		if(doc == null){
+			Document newDoc = new Document("ridername", username)
 					.append("origin", origin)
 					.append("destination", destination)
 					.append("date", date);
 		
-		collection.insertOne(newDoc);
+			collection.insertOne(newDoc);
+			result = "{\"success\": true}";	
+			return result;
+		}else{
+			result = "{\"success\": false, \"message\": \"Request already exists\"}";
+			return result;
+		}
 		
-		MatchMaking.process();
-
-		return Response.status(202).entity("SUCCESS").build();
 	}
 
 }
